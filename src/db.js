@@ -4,7 +4,6 @@ import {
     DB_USER, 
     DB_PASSWORD, 
     DB_PORT, 
-    DB_PASSWORD, 
     DB_DATABASE 
 } from "./config";
 
