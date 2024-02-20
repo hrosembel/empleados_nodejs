@@ -3,11 +3,11 @@ import { pool } from "../db.js";
 import bcrypt from "bcrypt";
 
 export const getUsers = async () => {
-  return await pool.query("SELECT * FROM user");
+  return await pool.query("SELECT * FROM usertbl");
 };
 
 export const getUserById = async (id) => {
-  return await pool.query("SELECT * FROM user WHERE id = ?", [id]);
+  return await pool.query("SELECT * FROM usertbl WHERE id = ?", [id]);
 };
 
 export const createUser = async (params) => {
@@ -16,7 +16,7 @@ export const createUser = async (params) => {
 
   //Guardar usuario en la base de datos
   return await pool.query(
-    "INSERT INTO user (name, surname, nick, email, password) VALUES (?,?,?,?,?)",
+    "INSERT INTO usertbl (name, surname, nick, email, password) VALUES (?,?,?,?,?)",
     [params.name, params.surname, params.nick.trim(), params.email.trim(), hash]
   );
 };
@@ -34,7 +34,7 @@ export const updateUser = async (id, params) => {
 
   //Actualizar usuario en la base de datos
   const [result] = await pool.query(
-    `UPDATE user SET name = IFNULL(?, name),
+    `UPDATE usertbl SET name = IFNULL(?, name),
       surname = IFNULL(?, surname),
       nick = IFNULL(?, nick),
       email = IFNULL(?, email),
@@ -49,14 +49,14 @@ export const updateUser = async (id, params) => {
 
 export const deleteUser = async (id) => {
   //Actualizar usuario en la base de datos
-  const [result] = await pool.query(`DELETE FROM user WHERE id = ?`, [id]);
+  const [result] = await pool.query(`DELETE FROM usertbl WHERE id = ?`, [id]);
 
   return result.affectedRows > 0;
 };
 
 export const userExists = async (params) => {
   const [result] = await pool.query(
-    "SELECT * FROM user WHERE email = ? OR nick = ?",
+    "SELECT * FROM usertbl WHERE email = ? OR nick = ?",
     [params.email.trim(), params.nick.trim()]
   );
 
@@ -65,13 +65,13 @@ export const userExists = async (params) => {
 
 export const getUserByUsernameOrEmail = async (params) => {
   if (params.email) {
-    return await pool.query("SELECT * FROM user WHERE email = ?", [
+    return await pool.query("SELECT * FROM usertbl WHERE email = ?", [
       params.email.trim(),
     ]);
   }
 
   if (params.nick) {
-    return await pool.query("SELECT * FROM user WHERE nick = ?", [
+    return await pool.query("SELECT * FROM usertbl WHERE nick = ?", [
       params.nick.trim(),
     ]);
   }
