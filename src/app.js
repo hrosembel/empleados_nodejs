@@ -1,23 +1,28 @@
 import express from 'express'
-import { pool } from './db.js'
-import employeesRoutes from './routes/employees.routes.js'
+import cors from "cors";
+import employeesRoutes from './routes/employee.routes.js'
+import userRoutes from './routes/user.routes.js'
+import { notFound, errorHandler } from "./middlewares/errorHandler.js";
 
+//Configuracion del servidor
 const app = express()
 
-app.use(express.json())
+//Configurar cors
+app.use(cors())
 
-app.get('/ping', async (req, res) => {
-    const [result] = await pool.query('SELECT 1 + 1 AS result')
-    res.json(result[0])
-});
+//Convertir body a objeto js
+app.use(express.json()) // recibir datos con content-type app/json
+app.use(express.urlencoded({extended:true})) // datos con formato form-urlencoded
 
+//Lllamando rutas de empleados
 app.use('/api', employeesRoutes)
 
-app.use((req, res, next) => {
-    res.status(404).json({
-        message: 'Endpoint not found'
-    })
-})
+//Lllamando rutas de usuarios
+app.use('/api', userRoutes)
+
+//Manejo de errores
+app.use(notFound)
+app.use(errorHandler)
 
 export default app;
 

@@ -9,3 +9,4 @@ export const DB_PASSWORD = process.env.DB_PASSWORD || '21Salvador10'
 export const DB_HOST = process.env.DB_HOST || 'localhost'
 export const DB_DATABASE = process.env.DB_DATABASE || 'companydb'
 export const DB_PORT = process.env.DB_PORT || 3306
+export const NODE_ENV = process.env.NODE_ENV || 'dev'
